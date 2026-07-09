@@ -548,6 +548,20 @@ This project is licensed under the **MIT License**.
 
 ---
 
+---
+
+<div align="center">
+
+### 🌿 EcoVision
+
+**Building Smarter Agriculture Through Artificial Intelligence**
+
+Made with ❤️ using Flutter • FastAPI • PyTorch
+
+⭐ If you like this project, don't forget to star the repository!
+
+</div>
+
 ## Authors
 
 **Developed by:** Dulaj Ashen,Minhaj ali,tharaka,rinushan
