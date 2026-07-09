@@ -51,6 +51,7 @@ The platform consists of:
 * **PostgreSQL Database**
 * **AI Model for Plant Disease Classification**
 * **Admin Dashboard**
+* * **UV → Fast Python package/environment manager**
 
 ---
 
