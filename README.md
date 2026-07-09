@@ -24,6 +24,21 @@ Flutter Mobile/Desktop applications and a FastAPI backend.
 <img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
 </p>
 
+## 🌱 About EcoVision
+
+EcoVision is an AI-powered smart agriculture platform designed to assist farmers,
+researchers, and agricultural experts in identifying plant diseases from leaf images.
+
+Using state-of-the-art deep learning models, EcoVision provides instant disease
+classification, confidence scores, treatment recommendations, and preventive measures
+through an intuitive Flutter application powered by a FastAPI backend.
+
+The platform aims to improve crop productivity, reduce disease spread, and promote
+sustainable farming practices using modern artificial intelligence technologies.
+
+
+
+
 ## 🌱 Overview
 
 The **Intelligent Plant Disease Classification Platform** is an AI-powered mobile and web application designed to help farmers, home gardeners, and agricultural professionals quickly identify plant diseases using images of plant leaves. Users can capture or upload a photo of a plant leaf, and the system uses a deep learning model to classify the disease and provide treatment recommendations, preventive measures, and disease management guidance.
@@ -64,50 +79,21 @@ Develop an AI-powered plant disease classification platform that accurately dete
 * Build an administrative dashboard.
 * Evaluate model performance.
 
----
+## ✨ Features
 
-# Key Features
-
-## User Features
-
-* User Registration
-* Login using JWT Authentication
-* Upload leaf images
-* Capture images using camera
-* Disease prediction
-* Confidence score
-* Disease description
-* Treatment recommendation
-* Prevention tips
-* Diagnosis history
-* Favorite diagnoses
-* Notifications
-* Offline image saving
-* Multi-language support (Optional)
-
----
-
-## AI Features
-
-* Image preprocessing
-* Deep Learning classification
-* Confidence estimation
-* Multiple crop support
-* Disease severity estimation (Optional)
-
----
-
-## Admin Features
-
-* Manage users
-* Manage diseases
-* Manage treatment database
-* View prediction history
-* Analytics dashboard
-* Export reports
-* Manage AI model versions
-
----
+- 📸 AI-Based Plant Disease Classification
+- 🌿 Instant Disease Diagnosis
+- 📊 Confidence Score Prediction
+- 💊 Treatment Recommendations
+- 🛡 Disease Prevention Tips
+- 📚 Diagnosis History
+- 👨‍🌾 Farmer Dashboard
+- 👩‍💼 Admin Dashboard
+- 📱 Flutter Mobile Application
+- 💻 Flutter Desktop Application
+- ⚡ FastAPI REST API
+- 🔒 JWT Authentication
+- ☁ Cloud Ready Architecture
 
 # System Architecture
 
