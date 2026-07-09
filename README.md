@@ -20,6 +20,9 @@ Flutter Mobile/Desktop applications and a FastAPI backend.
 <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge"/>
 
 </div>
+<p align="center">
+<img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
+</p>
 
 ## 🌱 Overview
 
