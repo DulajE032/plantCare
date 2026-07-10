@@ -170,8 +170,7 @@ Develop an AI-powered plant disease classification platform that accurately dete
 
 # Project Structure
 
-```
-plant-disease-platform/
+ecovision/
 
 │
 ├── backend/
@@ -190,20 +189,17 @@ plant-disease-platform/
 │   ├── requirements.txt
 │   └── Dockerfile
 │
-├── flutter_app/
-│   ├── android/
-│   ├── ios/
-│   ├── linux/
-│   ├── windows/
-│   ├── macos/
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── hooks/
 │   ├── lib/
-│   │   ├── screens/
-│   │   ├── widgets/
-│   │   ├── models/
-│   │   ├── services/
-│   │   ├── providers/
-│   │   └── main.dart
-│   └── pubspec.yaml
+│   ├── services/
+│   ├── types/
+│   ├── public/
+│   ├── styles/
+│   ├── package.json
+│   └── next.config.ts
 │
 ├── ai_model/
 │   ├── dataset/
@@ -215,9 +211,6 @@ plant-disease-platform/
 ├── docs/
 │
 └── README.md
-```
-
----
 
 # User Roles
 
@@ -439,23 +432,20 @@ POST /api/admin/diseases
 
 ---
 
-# Flutter Screens
+# Web Pages
 
-* Splash Screen
-* Login
-* Register
-* Home
-* Camera
-* Gallery
-* Prediction Result
-* Disease Details
-* History
-* Favorites
-* Notifications
-* Profile
-* Settings
-* About
-
+- Landing Page
+- Login
+- Register
+- Dashboard
+- Upload Image
+- Disease Prediction
+- Disease Details
+- Prediction History
+- Articles
+- Profile
+- Settings
+- Admin Dashboard
 ---
 
 # Future Enhancements
@@ -526,16 +516,13 @@ alembic upgrade head
 
 uvicorn app.main:app --reload
 ```
+## Frontend
 
-## Flutter
+cd frontend
 
-```bash
-cd flutter_app
+npm install
 
-flutter pub get
-
-flutter run
-```
+npm run dev
 
 ---
 
@@ -562,17 +549,27 @@ This project is licensed under the **MIT License**.
 
 ### 🌿 EcoVision
 
-**Building Smarter Agriculture Through Artificial Intelligence**
-
-Made with ❤️ using Flutter • FastAPI • PyTorch
-
 ⭐ If you like this project, don't forget to star the repository!
 
 </div>
 
 ## Authors
 
-**Developed by:** Dulaj Ashen,Minhaj ali,tharaka,rinushan
+**Developed by:** Dulaj Ashen, Minhaj Ali, Tharaka, Rinushan
+
 **University:** Faculty of Engineering, University of Peradeniya
-**Project Type:** Final Year Software Engineering / Computer Engineering Project
-**Technology Stack:** Flutter • FastAPI • PostgreSQL • PyTorch • OpenCV • Docker
+
+**Project Type:** Final Year Computer Engineering Project
+
+### Tech Stack
+
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- FastAPI
+- PostgreSQL
+- PyTorch
+- OpenCV
+- Docker
+- Vercel
