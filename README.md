@@ -2,7 +2,7 @@
 <div align="center">
 
 
-# 🌿 EcoVision
+# 🌿 PlantCare
 
 ### Intelligent Plant Disease Classification Platform
 
@@ -28,7 +28,7 @@ a modern Next.js web application powered by a FastAPI backend.
 <img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
 </p>
 
-## 🌱 About EcoVision
+## 🌱 About PlantCare
 
 EcoVision is an AI-powered smart agriculture platform designed to assist farmers,
 researchers, and agricultural experts in identifying plant diseases from leaf images.
@@ -547,7 +547,7 @@ This project is licensed under the **MIT License**.
 
 <div align="center">
 
-### 🌿 EcoVision
+### 🌿 PlantCare
 
 ⭐ If you like this project, don't forget to star the repository!
 
