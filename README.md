@@ -1,3 +1,7 @@
+
+<div align="center">
+
+
 # 🌿 EcoVision
 
 ### Intelligent Plant Disease Classification Platform
@@ -18,6 +22,7 @@ a modern Next.js web application powered by a FastAPI backend.
 <img src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch"/>
 <img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwind-css"/>
 <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge"/>
+
 </div>
 <p align="center">
 <img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
