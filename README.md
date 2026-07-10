@@ -1,24 +1,23 @@
-<div align="center">
-
 # 🌿 EcoVision
 
 ### Intelligent Plant Disease Classification Platform
 
-<img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=26&duration=3000&pause=1000&color=2ECC71&center=true&vCenter=true&width=700&lines=AI-Powered+Plant+Disease+Classification;Flutter+%7C+FastAPI+%7C+PyTorch;Smart+Agriculture+Platform;Empowering+Farmers+with+Artificial+Intelligence" />
+<img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=26&duration=3000&pause=1000&color=2ECC71&center=true&vCenter=true&width=700&lines=AI-Powered+Plant+Disease+Classification;Next.js+%7C+FastAPI+%7C+PyTorch;Smart+Agriculture+Platform;Empowering+Farmers+with+Artificial+Intelligence" />
 
 <p>
 An AI-powered platform that helps farmers identify plant diseases instantly using deep learning,
 providing accurate diagnosis, treatment recommendations, and crop health management through
-Flutter Mobile/Desktop applications and a FastAPI backend.
+a modern Next.js web application powered by a FastAPI backend.
 </p>
 
-<img src="https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter"/>
+<img src="https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js"/>
+<img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react"/>
 <img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi"/>
 <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python"/>
 <img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql"/>
 <img src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch"/>
+<img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwind-css"/>
 <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge"/>
-
 </div>
 <p align="center">
 <img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
@@ -99,18 +98,16 @@ Develop an AI-powered plant disease classification platform that accurately dete
 # System Architecture
 
 ```
-                Flutter Mobile
-                     │
-                Flutter Desktop
-                     │
-                 REST API
-                     │
-                FastAPI Backend
-                     │
-     ┌───────────────┼────────────────┐
-     │               │                │
- PostgreSQL     AI Classification   File Storage
- Database          Model
+                 Next.js Frontend
+                       │
+                 REST API (HTTPS)
+                       │
+                 FastAPI Backend
+                       │
+      ┌────────────────┼────────────────┐
+      │                │                │
+ PostgreSQL      AI Classification    File Storage
+  Database             Model
 ```
 
 ---
@@ -119,47 +116,52 @@ Develop an AI-powered plant disease classification platform that accurately dete
 
 ## Frontend
 
-* Flutter
-* Dart
-* Material Design
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- Shadcn UI
+- Framer Motion
+- Axios
 
 ---
 
 ## Backend
 
-* FastAPI
-* Python 3.12+
-* SQLAlchemy
-* Alembic
-* Pydantic
-* JWT Authentication
+- FastAPI
+- Python 3.12+
+- SQLAlchemy
+- Alembic
+- Pydantic
+- JWT Authentication
+- Uvicorn
 
 ---
 
 ## Database
 
-* PostgreSQL
+- PostgreSQL
 
 ---
 
-## AI
+## Artificial Intelligence
 
-* PyTorch
-* TensorFlow (Optional)
-* OpenCV
-* NumPy
-* Pillow
-* Torchvision
+- PyTorch
+- Torchvision
+- OpenCV
+- NumPy
+- Pillow
 
 ---
 
 ## Deployment
 
-* Docker
-* Nginx
-* Azure / AWS / Railway
-
----
+- Docker
+- Nginx
+- Azure
+- AWS
+- Railway
+- Vercel (Frontend)
 
 # Project Structure
 
