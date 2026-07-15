@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DiseaseCard } from "@/components/shared/DiseaseCard"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { DiseaseCardSkeleton } from "@/components/skeletons/DiseaseCardSkeleton"
-import { mockDiseases } from "@/lib/mock-data"
+import { getDiseases } from "@/lib/api"
 import { DiseaseRecommendation } from "@/lib/types"
 
 export default function DiseaseLibraryPage() {
@@ -17,16 +17,21 @@ export default function DiseaseLibraryPage() {
   const [diseases, setDiseases] = useState<DiseaseRecommendation[]>([])
 
   useEffect(() => {
-    // Simulate API fetch delay
-    const timer = setTimeout(() => {
-      setDiseases(mockDiseases)
-      setLoading(false)
-    }, 1000)
+    async function loadDiseases() {
+      try {
+        const data = await getDiseases()
+        setDiseases(data)
+      } catch (err) {
+        console.error("Failed to load diseases:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    return () => clearTimeout(timer)
+    loadDiseases()
   }, [])
 
-  const crops = ["All", ...Array.from(new Set(mockDiseases.map((d) => d.cropType)))]
+  const crops = ["All", ...Array.from(new Set(diseases.map((d) => d.cropType)))]
 
   const filteredDiseases = diseases.filter((d) => {
     const matchesSearch = d.disease.toLowerCase().includes(search.toLowerCase()) || 

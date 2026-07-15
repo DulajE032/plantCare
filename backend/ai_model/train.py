@@ -1,64 +1,62 @@
-import os
-import joblib
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+import torch, json
+from torch import nn, optim
+from torchvision import datasets, transforms, models
+from torch.utils.data import DataLoader
 
-from download_data import get_dataset_path
-from utils import extract_features
+train_tf = transforms.Compose([
+    transforms.RandomResizedCrop(224),
+    transforms.RandomHorizontalFlip(),
+    transforms.ColorJitter(0.2, 0.2, 0.2),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485,0.456,0.406], [0.229,0.224,0.225]),
+])
+val_tf = transforms.Compose([
+    transforms.Resize((224,224)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485,0.456,0.406], [0.229,0.224,0.225]),
+])
 
-def train_model():
-    dataset_path = get_dataset_path()
-    
-    X = [] # This will hold our feature vectors
-    y = [] # This will hold our text labels (e.g., "Tomato___Late_blight")
-    
-    print("⏳ Extracting features from images... (This may take a while for 3GB!)")
-    
-    # Loop through every class folder
-    for class_name in os.listdir(dataset_path):
-        class_dir = os.path.join(dataset_path, class_name)
-        
-        if not os.path.isdir(class_dir):
-            continue
-            
-        print(f"Processing class: {class_name}...")
-        
-        # Loop through images in the class folder
-        # For testing speed, you can slice the list: os.listdir(class_dir)[:100]
-        for img_name in os.listdir(class_dir):
-            img_path = os.path.join(class_dir, img_name)
-            
-            features = extract_features(img_path)
-            if features is not None:
-                X.append(features)
-                y.append(class_name)
+train_ds = datasets.ImageFolder("datasset/train", transform=train_tf)
+val_ds   = datasets.ImageFolder("datasset/valid", transform=val_tf)
+json.dump(train_ds.classes, open("class_names.json", "w"))
 
-    X = np.array(X)
-    
-    # Convert text labels to integers
-    label_encoder = LabelEncoder()
-    y_encoded = label_encoder.fit_transform(y)
-    
-    print("🔀 Splitting data for validation...")
-    X_train, X_val, y_train, y_val = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
-    
-    print("🧠 Training Random Forest Classifier...")
-    model = RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42)
-    model.fit(X_train, y_train)
-    
-    print("📊 Evaluating model...")
-    y_pred = model.predict(X_val)
-    accuracy = accuracy_score(y_val, y_pred)
-    print(f"✅ Validation Accuracy: {accuracy * 100:.2f}%")
-    
-    # Save the trained model and label encoder to the models/ folder
-    os.makedirs("models", exist_ok=True)
-    joblib.dump(model, "models/disease_rf_model.pkl")
-    joblib.dump(label_encoder, "models/label_encoder.pkl")
-    print("💾 Model and Encoder saved successfully in models/ directory!")
+train_loader = DataLoader(train_ds, batch_size=32, shuffle=True, num_workers=2)
+val_loader   = DataLoader(val_ds, batch_size=32)
 
-if __name__ == "__main__":
-    train_model()
+model = models.mobilenet_v3_large(weights="IMAGENET1K_V1")
+in_features = model.classifier[3].in_features
+model.classifier[3] = nn.Linear(in_features, len(train_ds.classes))
+
+optimizer = optim.Adam(model.parameters(), lr=1e-4)
+criterion = nn.CrossEntropyLoss()
+
+best_acc = 0.0
+EPOCHS = 15
+
+for epoch in range(EPOCHS):
+    model.train()
+    running_loss = 0.0
+    for images, labels in train_loader:
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+
+    model.eval()
+    correct, total = 0, 0
+    with torch.no_grad():
+        for images, labels in val_loader:
+            preds = model(images).argmax(dim=1)
+            correct += (preds == labels).sum().item()
+            total += labels.size(0)
+    val_acc = correct / total
+    print(f"Epoch {epoch+1}/{EPOCHS} — loss: {running_loss/len(train_loader):.4f} — val acc: {val_acc:.3f}")
+
+    if val_acc > best_acc:
+        best_acc = val_acc
+        torch.save(model.state_dict(), "models/best_model.pth")
+        print(f"  ↳ saved new best model ({val_acc:.3f})")
+
+print(f"Training complete. Best val acc: {best_acc:.3f}")

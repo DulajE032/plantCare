@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { SeverityBadge } from "@/components/result/SeverityBadge"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { HistoryItemSkeleton } from "@/components/skeletons/HistoryItemSkeleton"
-import { mockHistory } from "@/lib/mock-data"
+import { getHistory } from "@/lib/api"
 import { HistoryItem } from "@/lib/types"
 
 export default function HistoryPage() {
@@ -16,21 +16,23 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate API fetch delay
-    const timer = setTimeout(() => {
-      // Fetch from local storage, if empty use mockHistory as fallback
-      const stored = localStorage.getItem("plant_history")
-      if (stored) {
-        setHistory(JSON.parse(stored))
-      } else {
-        setHistory(mockHistory)
-        // Store it so it persists next time
-        localStorage.setItem("plant_history", JSON.stringify(mockHistory))
+    async function loadHistory() {
+      try {
+        const data = await getHistory()
+        setHistory(data)
+      } catch (err) {
+        console.error("Failed to load history:", err)
+        // Fallback: try localStorage
+        const stored = localStorage.getItem("plant_history")
+        if (stored) {
+          setHistory(JSON.parse(stored))
+        }
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
-    }, 1000)
+    }
 
-    return () => clearTimeout(timer)
+    loadHistory()
   }, [])
 
   const deleteItem = (id: string, e: React.MouseEvent) => {
@@ -89,7 +91,7 @@ export default function HistoryPage() {
       ) : history.length > 0 ? (
         <div className="space-y-4 max-w-3xl">
           {history.map((item) => (
-            <Link key={item.id} href={`/result/${item.id.includes("scan-") ? "tomato-late-blight" : item.id}`}>
+            <Link key={item.id} href={`/result/${item.diseaseName.toLowerCase().replace(/\s+/g, "-")}`}>
               <Card className="hover:shadow-md hover:border-zinc-200 dark:hover:border-zinc-700 transition-all border border-zinc-100 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/50">
                 <CardContent className="p-4 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">

@@ -33,16 +33,13 @@ export default function ScanPage() {
     setError(null)
 
     try {
-      // Attempt real API call
       const result = await predictDisease(selectedFile)
-      router.push(`/result/${result.recommendation.id || "tomato-late-blight"}`)
+      // Store the full result so the result page can display it
+      sessionStorage.setItem("lastScanResult", JSON.stringify(result))
+      router.push(`/result/${result.recommendation.slug}`)
     } catch (err) {
-      console.warn("Backend API not reachable. Using mock fallback result.")
-      
-      // Fallback navigation with mock delay
-      setTimeout(() => {
-        router.push("/result/tomato-late-blight")
-      }, 1500)
+      setError("Failed to analyze image. Please make sure the backend server is running.")
+      setStatus("selected")
     }
   }
 
