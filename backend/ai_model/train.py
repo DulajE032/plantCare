@@ -1,7 +1,8 @@
-import torch, json
+import torch, json, os
 from torch import nn, optim
 from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
+
 
 train_tf = transforms.Compose([
     transforms.RandomResizedCrop(224),
@@ -17,6 +18,7 @@ val_tf = transforms.Compose([
 ])
 
 if __name__ == "__main__":
+    os.makedirs("models", exist_ok=True)
     print("Loading datasets from 'datasset' folder...")
     train_ds = datasets.ImageFolder("datasset/train", transform=train_tf)
     val_ds   = datasets.ImageFolder("datasset/valid", transform=val_tf)

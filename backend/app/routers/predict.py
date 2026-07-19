@@ -40,13 +40,41 @@ async def predict(
         logger.error(f"Inference failed: {e}")
         raise HTTPException(500, f"Inference failed: {e}")
 
-    # 2. Get Disease Info from DB
-    result = await db.execute(select(Disease).where(Disease.slug == pred_slug))
-    disease_info = result.scalars().first()
+    # 2. Get Disease Info or Handle Healthy Plant
+    is_healthy = "healthy" in pred_slug.lower()
+    
+    if is_healthy:
+        # Extract crop type from slug (e.g. "tomato-healthy" -> "Tomato")
+        crop_slug = pred_slug.split("-healthy")[0]
+        cropType = crop_slug.replace("-", " ").replace("(", " (").replace(")", ") ").strip().title()
+        
+        disease_info_id = pred_slug
+        disease_name = "Healthy"
+        disease_severity = "low"
+        disease_desc = f"The {cropType} plant is healthy and shows no signs of disease."
+        disease_causes = []
+        disease_treatment = []
+        disease_prevention = [
+            "Keep monitoring the plant regularly for early signs of pests or disease.",
+            "Maintain optimal watering schedules, avoiding water logging.",
+            "Ensure the plant receives appropriate sunlight and nutrients."
+        ]
+    else:
+        result = await db.execute(select(Disease).where(Disease.slug == pred_slug))
+        disease_info = result.scalars().first()
 
-    if not disease_info:
-        logger.error(f"Unknown class '{pred_slug}' — not found in diseases table.")
-        raise HTTPException(500, f"Model predicted unknown class '{pred_slug}' — check diseases in DB.")
+        if not disease_info:
+            logger.error(f"Unknown class '{pred_slug}' — not found in diseases table.")
+            raise HTTPException(500, f"Model predicted unknown class '{pred_slug}' — check diseases in DB.")
+            
+        disease_info_id = disease_info.id
+        disease_name = disease_info.disease
+        disease_severity = disease_info.severity
+        disease_desc = disease_info.description
+        disease_causes = disease_info.causes
+        disease_treatment = disease_info.treatment
+        disease_prevention = disease_info.prevention
+        cropType = disease_info.cropType
 
     # 3. Save Image
     ext = file.filename.split(".")[-1] if file.filename and "." in file.filename else "jpg"
@@ -66,9 +94,9 @@ async def predict(
         id=history_id,
         imageUrl=image_url,
         thumbnailUrl=image_url,
-        diseaseName=disease_info.disease,
+        diseaseName=disease_name if not is_healthy else f"Healthy {cropType}",
         confidence=confidence,
-        severity=disease_info.severity,
+        severity=disease_severity,
     )
 
     db.add(new_history)
@@ -80,15 +108,15 @@ async def predict(
         "id": new_history.id,
         "imageUrl": new_history.imageUrl,
         "recommendation": {
-            "id": disease_info.id,
-            "disease": disease_info.disease,
-            "slug": disease_info.slug,
-            "severity": disease_info.severity,
-            "description": disease_info.description,
-            "causes": disease_info.causes,
-            "treatment": disease_info.treatment,
-            "prevention": disease_info.prevention,
-            "cropType": disease_info.cropType,
+            "id": disease_info_id,
+            "disease": disease_name if not is_healthy else f"Healthy {cropType}",
+            "slug": pred_slug,
+            "severity": disease_severity,
+            "description": disease_desc,
+            "causes": disease_causes,
+            "treatment": disease_treatment,
+            "prevention": disease_prevention,
+            "cropType": cropType,
             "confidence": confidence,
         },
         "scannedAt": new_history.scannedAt.isoformat() + "Z" if new_history.scannedAt else None,
