@@ -10,6 +10,7 @@ from app.services.classifier import classifier
 from app.config import settings
 from app.database import get_db
 from app.db_models import Disease, HistoryItem
+from app.schemas.models import ScanResult
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ router = APIRouter()
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
-@router.post("/predict")
+@router.post("/predict", response_model=ScanResult)
 async def predict(
     request: Request,
     file: UploadFile = File(...),

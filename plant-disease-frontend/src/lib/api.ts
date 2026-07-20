@@ -37,3 +37,23 @@ export async function getDiseaseBySlug(slug: string): Promise<DiseaseRecommendat
 export async function getHistory(): Promise<HistoryItem[]> {
   return fetcher<HistoryItem[]>("/history")
 }
+
+export async function deleteHistoryItem(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/history/${id}`, {
+    method: "DELETE",
+  })
+  if (!res.ok) {
+    throw new Error("Failed to delete history item.")
+  }
+  return res.json()
+}
+
+export async function clearHistory(): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/history`, {
+    method: "DELETE",
+  })
+  if (!res.ok) {
+    throw new Error("Failed to clear history.")
+  }
+  return res.json()
+}

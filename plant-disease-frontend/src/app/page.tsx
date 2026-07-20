@@ -6,11 +6,16 @@ import { ArrowRight, Camera, Brain, ClipboardCheck, Leaf, Sparkles } from "lucid
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import useSWR from "swr"
 import { RecommendationPanel } from "@/components/result/RecommendationPanel"
 import { mockDiseases } from "@/lib/mock-data"
+import { getDiseases } from "@/lib/api"
 
 export default function Home() {
-  const sampleDisease = mockDiseases[0] // Tomato Late Blight
+  const { data: diseases } = useSWR("/diseases", () => getDiseases(), { revalidateOnFocus: false })
+  const sampleDisease = (diseases && diseases.length > 0) 
+    ? { ...diseases[0], confidence: 94 } // Add mock confidence for preview
+    : mockDiseases[0] // Tomato Late Blight fallback
 
   const steps = [
     {
