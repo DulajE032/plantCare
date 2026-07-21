@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card"
 import { SeverityBadge } from "@/components/result/SeverityBadge"
 import { RecommendationPanel } from "@/components/result/RecommendationPanel"
 import { ResultSkeleton } from "@/components/skeletons/ResultSkeleton"
-import { mockDiseases } from "@/lib/mock-data"
+import { getDiseaseBySlug } from "@/lib/api"
 import { DiseaseRecommendation } from "@/lib/types"
 
 interface DiseaseDetailPageProps {
@@ -22,14 +22,18 @@ export default function DiseaseDetailPage({ params }: DiseaseDetailPageProps) {
   const [disease, setDisease] = useState<DiseaseRecommendation | null>(null)
 
   useEffect(() => {
-    // Simulate API fetch delay
-    const timer = setTimeout(() => {
-      const found = mockDiseases.find((d) => d.slug === resolvedParams.slug)
-      setDisease(found || null)
-      setLoading(false)
-    }, 1000)
+    async function loadDisease() {
+      try {
+        const data = await getDiseaseBySlug(resolvedParams.slug)
+        setDisease(data)
+      } catch (err) {
+        console.error("Failed to load disease:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    return () => clearTimeout(timer)
+    loadDisease()
   }, [resolvedParams.slug])
 
   if (loading) {

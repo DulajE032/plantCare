@@ -11,11 +11,22 @@ interface RecommendationPanelProps {
 
 export function RecommendationPanel({ recommendation, showConfidenceWarning = false }: RecommendationPanelProps) {
   const warningNeeded = showConfidenceWarning || (recommendation.confidence !== undefined && recommendation.confidence < 60)
+  const isHealthy = recommendation.slug ? recommendation.slug.toLowerCase().includes("healthy") : false
 
   return (
     <div className="space-y-6">
+      {/* Healthy Plant Success Banner */}
+      {isHealthy && (
+        <div className="flex gap-3 p-4 bg-green-50 border border-green-200 dark:bg-green-950/20 dark:border-green-900/30 rounded-xl text-green-800 dark:text-green-400">
+          <CheckCircle className="h-5 w-5 shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <span className="font-semibold">Plant is Healthy!</span> No active disease patterns were detected on the leaf. Keep up the good care!
+          </div>
+        </div>
+      )}
+
       {/* Confidence Warning Banner */}
-      {warningNeeded && (
+      {warningNeeded && !isHealthy && (
         <div className="flex gap-3 p-4 bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-900/30 rounded-xl text-amber-800 dark:text-amber-400">
           <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
           <div className="text-sm">
@@ -29,8 +40,12 @@ export function RecommendationPanel({ recommendation, showConfidenceWarning = fa
         {/* 1. Description */}
         <AccordionItem value="description" className="border border-zinc-100 dark:border-zinc-800 rounded-xl px-4 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4 text-zinc-900 dark:text-zinc-100 font-semibold flex gap-2.5 items-center">
-            <Info className="h-5 w-5 text-blue-500 shrink-0" />
-            <span>Disease Description</span>
+            {isHealthy ? (
+              <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
+            ) : (
+              <Info className="h-5 w-5 text-blue-500 shrink-0" />
+            )}
+            <span>{isHealthy ? "Plant Status" : "Disease Description"}</span>
           </AccordionTrigger>
           <AccordionContent className="text-zinc-600 dark:text-zinc-300 leading-relaxed pb-4">
             {recommendation.description}

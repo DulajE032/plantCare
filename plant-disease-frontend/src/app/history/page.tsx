@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { SeverityBadge } from "@/components/result/SeverityBadge"
 import { EmptyState } from "@/components/shared/EmptyState"
 import { HistoryItemSkeleton } from "@/components/skeletons/HistoryItemSkeleton"
-import { mockHistory } from "@/lib/mock-data"
+import { getHistory, deleteHistoryItem, clearHistory } from "@/lib/api"
 import { HistoryItem } from "@/lib/types"
 
 export default function HistoryPage() {
@@ -16,32 +16,54 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate API fetch delay
-    const timer = setTimeout(() => {
-      // Fetch from local storage, if empty use mockHistory as fallback
-      const stored = localStorage.getItem("plant_history")
-      if (stored) {
-        setHistory(JSON.parse(stored))
-      } else {
-        setHistory(mockHistory)
-        // Store it so it persists next time
-        localStorage.setItem("plant_history", JSON.stringify(mockHistory))
+    async function loadHistory() {
+      try {
+        const data = await getHistory()
+        setHistory(data)
+      } catch (err) {
+        console.error("Failed to load history:", err)
+        // Fallback: try localStorage
+        const stored = localStorage.getItem("plant_history")
+        if (stored) {
+          setHistory(JSON.parse(stored))
+        }
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
-    }, 1000)
+    }
 
-    return () => clearTimeout(timer)
+    loadHistory()
   }, [])
 
-  const deleteItem = (id: string, e: React.MouseEvent) => {
+  const deleteItem = async (id: string, e: React.MouseEvent) => {
     e.preventDefault() // prevent navigating
+    try {
+      // If it starts with 'scan-' and is a local-only scan, or delete from backend
+      if (!id.startsWith("scan-")) {
+        await deleteHistoryItem(id)
+      } else {
+        // Many backend scans also start with 'scan-', so we attempt delete
+        try {
+          await deleteHistoryItem(id)
+        } catch {
+          // ignore if it was only local
+        }
+      }
+    } catch (err) {
+      console.error("Failed to delete item from backend:", err)
+    }
     const updated = history.filter((item) => item.id !== id)
     setHistory(updated)
     localStorage.setItem("plant_history", JSON.stringify(updated))
   }
 
-  const clearAll = () => {
+  const clearAll = async () => {
     if (confirm("Are you sure you want to clear all scan history?")) {
+      try {
+        await clearHistory()
+      } catch (err) {
+        console.error("Failed to clear backend history:", err)
+      }
       setHistory([])
       localStorage.removeItem("plant_history")
     }
@@ -89,7 +111,7 @@ export default function HistoryPage() {
       ) : history.length > 0 ? (
         <div className="space-y-4 max-w-3xl">
           {history.map((item) => (
-            <Link key={item.id} href={`/result/${item.id.includes("scan-") ? "tomato-late-blight" : item.id}`}>
+            <Link key={item.id} href={`/result/${item.diseaseName.toLowerCase().replace(/\s+/g, "-")}`}>
               <Card className="hover:shadow-md hover:border-zinc-200 dark:hover:border-zinc-700 transition-all border border-zinc-100 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/50">
                 <CardContent className="p-4 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">

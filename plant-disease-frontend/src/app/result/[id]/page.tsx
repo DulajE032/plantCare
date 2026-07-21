@@ -11,8 +11,8 @@ import { ConfidenceBar } from "@/components/result/ConfidenceBar"
 import { SeverityBadge } from "@/components/result/SeverityBadge"
 import { RecommendationPanel } from "@/components/result/RecommendationPanel"
 import { ResultSkeleton } from "@/components/skeletons/ResultSkeleton"
-import { mockDiseases } from "@/lib/mock-data"
-import { DiseaseRecommendation } from "@/lib/types"
+import { getDiseaseBySlug } from "@/lib/api"
+import { DiseaseRecommendation, ScanResult } from "@/lib/types"
 
 interface ResultPageProps {
   params: Promise<{ id: string }>
@@ -23,17 +23,33 @@ export default function ResultPage({ params }: ResultPageProps) {
   const resolvedParams = use(params)
   const [loading, setLoading] = useState(true)
   const [disease, setDisease] = useState<DiseaseRecommendation | null>(null)
+  const [scanImageUrl, setScanImageUrl] = useState<string | null>(null)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    // Simulate API fetch delay
-    const timer = setTimeout(() => {
-      const found = mockDiseases.find((d) => d.id === resolvedParams.id) || mockDiseases[0]
-      setDisease(found)
-      setLoading(false)
-    }, 1500)
+    async function loadResult() {
+      try {
+        // 1. Try to get the full scan result from sessionStorage (set by scan page)
+        const stored = sessionStorage.getItem("lastScanResult")
+        if (stored) {
+          const scanResult: ScanResult = JSON.parse(stored)
+          setDisease(scanResult.recommendation)
+          setScanImageUrl(scanResult.imageUrl)
+          setLoading(false)
+          return
+        }
 
-    return () => clearTimeout(timer)
+        // 2. Fallback: fetch disease info from backend by slug
+        const data = await getDiseaseBySlug(resolvedParams.id)
+        setDisease(data)
+      } catch (err) {
+        console.error("Failed to load result:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadResult()
   }, [resolvedParams.id])
 
   const handleSave = () => {
@@ -119,14 +135,21 @@ export default function ResultPage({ params }: ResultPageProps) {
         {/* Left Column (Sticky Image and Base info) */}
         <div className="lg:col-span-5 lg:sticky lg:top-20 space-y-6">
           <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-zinc-250/50 dark:border-zinc-800 shadow-md">
-            <Image
-              src={disease.imageUrl || ""}
-              alt={disease.disease}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 400px"
-              priority
-            />
+            {(scanImageUrl || disease.imageUrl) ? (
+              <Image
+                src={scanImageUrl || disease.imageUrl || ""}
+                alt={disease.disease}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 400px"
+                priority
+                unoptimized
+              />
+            ) : (
+              <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                <span className="text-zinc-400 text-sm">No image available</span>
+              </div>
+            )}
           </div>
           
           <Card className="border border-zinc-100 dark:border-zinc-800 p-6 shadow-sm space-y-6">
