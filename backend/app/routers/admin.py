@@ -47,7 +47,6 @@ async def get_reports(
         .limit(10)
     )
     scans_by_disease = {row[0]: row[1] for row in disease_res.all()}
-
     return {
         "total_users": total_users,
         "total_scans": total_scans,
@@ -55,6 +54,37 @@ async def get_reports(
         "scans_by_disease": scans_by_disease
     }
 
+@router.get("/prediction-analytics")
+async def get_prediction_analytics(
+    db: AsyncSession = Depends(get_db),
+    admin: User = Depends(get_current_admin)
+):
+    from app.db_models import PredictionLog
+    total_logs_res = await db.execute(select(func.count(PredictionLog.id)))
+    total_logs = total_logs_res.scalar() or 0
+
+    avg_conf_res = await db.execute(select(func.avg(PredictionLog.confidence)))
+    avg_confidence = round(avg_conf_res.scalar() or 0.0, 2)
+
+    low_conf_res = await db.execute(
+        select(func.count(PredictionLog.id)).where(PredictionLog.confidence < 60.0)
+    )
+    low_confidence_scans = low_conf_res.scalar() or 0
+
+    top_diseases_res = await db.execute(
+        select(PredictionLog.predicted_slug, func.count(PredictionLog.id))
+        .group_by(PredictionLog.predicted_slug)
+        .order_by(func.count(PredictionLog.id).desc())
+        .limit(10)
+    )
+    top_predicted_slugs = {row[0]: row[1] for row in top_diseases_res.all()}
+
+    return {
+        "total_logged_predictions": total_logs,
+        "average_confidence": avg_confidence,
+        "low_confidence_scans_count": low_confidence_scans,
+        "top_predicted_classes": top_predicted_slugs
+    }
 @router.post("/diseases", response_model=DiseaseRecommendation, status_code=status.HTTP_201_CREATED)
 async def create_or_update_disease(
     disease_in: DiseaseRecommendation,
