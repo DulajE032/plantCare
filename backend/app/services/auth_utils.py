@@ -11,8 +11,10 @@ from app.database import get_db
 from app.db_models import User
 from app.schemas.models import TokenData
 
-SECRET_KEY = "plantcare_super_secret_key_change_me_in_production"
-ALGORITHM = "HS256"
+from app.config import settings
+
+SECRET_KEY = settings.jwt_secret_key
+ALGORITHM = settings.jwt_algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login", auto_error=False)

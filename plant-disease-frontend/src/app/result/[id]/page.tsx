@@ -12,7 +12,7 @@ import { SeverityBadge } from "@/components/result/SeverityBadge"
 import { RecommendationPanel } from "@/components/result/RecommendationPanel"
 import { ResultSkeleton } from "@/components/skeletons/ResultSkeleton"
 import { getDiseaseBySlug } from "@/lib/api"
-import { DiseaseRecommendation, ScanResult } from "@/lib/types"
+import { AlternativePrediction, DiseaseRecommendation, ScanResult } from "@/lib/types"
 
 interface ResultPageProps {
   params: Promise<{ id: string }>
@@ -24,6 +24,7 @@ export default function ResultPage({ params }: ResultPageProps) {
   const [loading, setLoading] = useState(true)
   const [disease, setDisease] = useState<DiseaseRecommendation | null>(null)
   const [scanImageUrl, setScanImageUrl] = useState<string | null>(null)
+  const [alternatives, setAlternatives] = useState<AlternativePrediction[]>([])
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
@@ -35,6 +36,9 @@ export default function ResultPage({ params }: ResultPageProps) {
           const scanResult: ScanResult = JSON.parse(stored)
           setDisease(scanResult.recommendation)
           setScanImageUrl(scanResult.imageUrl)
+          if (scanResult.alternatives) {
+            setAlternatives(scanResult.alternatives)
+          }
           setLoading(false)
           return
         }
@@ -161,7 +165,20 @@ export default function ResultPage({ params }: ResultPageProps) {
               <SeverityBadge severity={disease.severity} />
             </div>
 
+            {disease.disease.toLowerCase().includes("healthy") && (
+              <div className="p-4 bg-green-50 border border-green-200 dark:bg-green-950/30 dark:border-green-900/30 rounded-xl text-green-800 dark:text-green-300 text-sm font-semibold flex items-center gap-2">
+                <span>✅ Your plant is healthy! No diseases detected.</span>
+              </div>
+            )}
+
             <ConfidenceBar confidence={disease.confidence} />
+
+            {disease.confidence !== undefined && disease.confidence < 60 && (
+              <div className="p-4 bg-amber-50 border border-amber-200 dark:bg-amber-950/30 dark:border-amber-900/30 rounded-xl text-amber-900 dark:text-amber-300 text-sm font-semibold flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0" />
+                <span>Uncertain Diagnosis (&lt; 60% confidence). Please take a clearer photo under good lighting.</span>
+              </div>
+            )}
 
             {/* Actions Row */}
             <div className="grid grid-cols-2 gap-3 pt-2">
@@ -190,6 +207,14 @@ export default function ResultPage({ params }: ResultPageProps) {
                 </Button>
               </Link>
               <Button
+                variant="outline"
+                className="rounded-xl h-11 font-semibold border-zinc-200 dark:border-zinc-800 px-4"
+                onClick={() => window.print()}
+                title="Download PDF Report"
+              >
+                <span>Export PDF</span>
+              </Button>
+              <Button
                 variant="ghost"
                 size="icon"
                 className="rounded-xl text-zinc-400 hover:text-red-500"
@@ -203,7 +228,7 @@ export default function ResultPage({ params }: ResultPageProps) {
         </div>
 
         {/* Right Column (Recommendations) */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 space-y-6">
           <div className="border border-zinc-100 dark:border-zinc-800 rounded-2xl p-6 bg-white dark:bg-zinc-900/50 shadow-sm space-y-6">
             <div className="border-b border-zinc-100 dark:border-zinc-800 pb-4">
               <h2 className="text-xl font-bold text-zinc-950 dark:text-zinc-50">Diagnosis Results & Guidance</h2>
@@ -211,6 +236,42 @@ export default function ResultPage({ params }: ResultPageProps) {
             </div>
             <RecommendationPanel recommendation={disease} />
           </div>
+
+          {/* Alternative Diagnoses */}
+          {alternatives.length > 0 && (
+            <div className="border border-zinc-100 dark:border-zinc-800 rounded-2xl p-6 bg-white dark:bg-zinc-900/50 shadow-sm space-y-4">
+              <div>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Other Possible Diagnoses</h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">The AI also considered these alternatives. Tap to view details.</p>
+              </div>
+              <div className="space-y-3">
+                {alternatives.map((alt) => (
+                  <Link key={alt.slug} href={`/diseases/${alt.slug}`}>
+                    <div className="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-xl hover:shadow-sm hover:border-zinc-200 dark:hover:border-zinc-700 transition-all bg-zinc-50/50 dark:bg-zinc-950/30">
+                      <div className="space-y-0.5">
+                        <h4 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{alt.disease}</h4>
+                        <span className="text-xs text-zinc-400">{alt.cropType} Crop</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className={`text-sm font-bold ${
+                          alt.confidence >= 20 ? 'text-amber-600 dark:text-amber-400' : 'text-zinc-400'
+                        }`}>
+                          {alt.confidence}%
+                        </span>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${
+                          alt.severity === 'severe' ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/30 dark:text-rose-400' :
+                          alt.severity === 'moderate' ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400' :
+                          'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400'
+                        }`}>
+                          {alt.severity}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
