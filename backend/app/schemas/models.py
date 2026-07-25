@@ -30,12 +30,16 @@ class ScanResult(BaseModel):
 
 class HistoryItem(BaseModel):
     id: str
+    imageUrl: Optional[str] = None
     thumbnailUrl: Optional[str] = None
     diseaseName: str
     confidence: float
     severity: str
-    scannedAt: str
+    scannedAt: datetime.datetime
     user_id: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 # User Schemas
 class UserCreate(BaseModel):
