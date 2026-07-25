@@ -138,13 +138,19 @@ export default function Home() {
           {/* Mock Left Column */}
           <div className="lg:col-span-5 space-y-6">
             <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-zinc-200/60 dark:border-zinc-800 shadow-md">
-              <Image
-                src={sampleDisease.imageUrl || ""}
-                alt="Late Blight leaf sample"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 400px"
-              />
+              {sampleDisease.imageUrl ? (
+                <Image
+                  src={sampleDisease.imageUrl}
+                  alt="Late Blight leaf sample"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
+                  <Leaf className="h-16 w-16" />
+                </div>
+              )}
             </div>
             <Card className="border border-zinc-100 dark:border-zinc-800 p-6 shadow-sm">
               <div className="space-y-4">

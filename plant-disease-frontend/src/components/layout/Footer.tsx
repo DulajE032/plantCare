@@ -59,9 +59,15 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm mb-4">Contact</h3>
             <ul className="space-y-2 text-sm text-zinc-500 dark:text-zinc-400">
-              <li>Email: contact@plantcare.ai</li>
-              <li>Phone: +1 (555) 019-2834</li>
-              <li>Location: Colombo, Sri Lanka</li>
+              <li>
+                Email: <a href="mailto:dulajashennew2002@gmail.com" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">dulajashennew2002@gmail.com</a>
+              </li>
+              <li>
+                Phone: <a href="tel:+94774126871" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">+94774126871</a>
+              </li>
+              <li>
+                Location: Faculty of Engineering, University of Peradeniya
+              </li>
             </ul>
           </div>
         </div>
