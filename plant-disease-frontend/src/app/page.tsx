@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Camera, Brain, ClipboardCheck, Leaf, Sparkles } from "lucide-react"
+import { ArrowRight, Camera, Brain, ClipboardCheck, Leaf, Sparkles, CloudSun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -47,6 +47,24 @@ export default function Home() {
 
   return (
     <div className="space-y-20 pb-12">
+      {/* Weather Alert Widget Banner */}
+      <div className="p-4 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-transparent border border-amber-200/50 dark:border-amber-900/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-xl">
+            <CloudSun className="h-6 w-6" />
+          </div>
+          <div>
+            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">High Humidity Alert • Disease Risk Warning</h4>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">Current damp weather conditions increase fungal spore spread (Late Blight & Powdery Mildew).</p>
+          </div>
+        </div>
+        <Link href="/scan">
+          <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold whitespace-nowrap">
+            Check Crop Health
+          </Button>
+        </Link>
+      </div>
+
       {/* 1. Hero Section */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-4 lg:pt-10">
         <div className="lg:col-span-7 space-y-6 text-center lg:text-left">

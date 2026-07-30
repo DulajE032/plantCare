@@ -54,3 +54,7 @@ app.include_router(articles.router)
 @app.get("/")
 def root():
     return {"message": "PlantCare AI Backend is running."}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}

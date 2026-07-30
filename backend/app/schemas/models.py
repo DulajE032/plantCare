@@ -14,10 +14,18 @@ class DiseaseRecommendation(BaseModel):
     cropType: str
     confidence: Optional[float] = None
 
+class AlternativePrediction(BaseModel):
+    slug: str
+    disease: str
+    confidence: float
+    severity: str
+    cropType: str
+
 class ScanResult(BaseModel):
     id: str
     imageUrl: Optional[str] = None
     recommendation: DiseaseRecommendation
+    alternatives: List[AlternativePrediction] = []
     scannedAt: str
 
 class HistoryItem(BaseModel):

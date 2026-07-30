@@ -37,9 +37,21 @@ async def predict(
     if len(contents) > MAX_FILE_SIZE:
         raise HTTPException(400, "File too large. Maximum size is 10 MB.")
 
-    # 1. Prediction
+    # 1.1 Sniff bytes for JPEG, PNG, or WEBP magic numbers
+    # JPEG starts with FF D8 FF
+    # PNG starts with 89 50 4E 47 0D 0A 1A 0A
+    # WEBP starts with RIFF (52 49 46 46) ... WEBP (57 45 42 50)
+    is_jpeg = contents.startswith(b'\xff\xd8\xff')
+    is_png = contents.startswith(b'\x89PNG\r\n\x1a\n')
+    is_webp = contents.startswith(b'RIFF') and b'WEBP' in contents[8:16]
+    
+    if not (is_jpeg or is_png or is_webp):
+        raise HTTPException(400, "Invalid file format signature. File must be a valid JPEG, PNG, or WEBP image.")
+
+    # 1. Prediction — get top-3 candidates
     try:
-        pred_slug, confidence = classifier.predict(contents)
+        top_predictions = classifier.predict_top_k(contents, k=3)
+        pred_slug, confidence = top_predictions[0]
     except Exception as e:
         logger.error(f"Inference failed: {e}")
         raise HTTPException(500, f"Inference failed: {e}")
@@ -79,6 +91,33 @@ async def predict(
         disease_treatment = disease_info.treatment
         disease_prevention = disease_info.prevention
         cropType = disease_info.cropType
+
+    # 2b. Build alternatives from runner-up predictions
+    alternatives = []
+    for alt_slug, alt_conf in top_predictions[1:]:
+        if alt_conf < 5.0:
+            continue  # skip negligible predictions
+        alt_is_healthy = "healthy" in alt_slug.lower()
+        if alt_is_healthy:
+            alt_crop = alt_slug.split("-healthy")[0].replace("-", " ").title()
+            alternatives.append({
+                "slug": alt_slug,
+                "disease": f"Healthy {alt_crop}",
+                "confidence": alt_conf,
+                "severity": "low",
+                "cropType": alt_crop,
+            })
+        else:
+            alt_result = await db.execute(select(Disease).where(Disease.slug == alt_slug))
+            alt_disease = alt_result.scalars().first()
+            if alt_disease:
+                alternatives.append({
+                    "slug": alt_slug,
+                    "disease": alt_disease.disease,
+                    "confidence": alt_conf,
+                    "severity": alt_disease.severity,
+                    "cropType": alt_disease.cropType,
+                })
 
     # 3. Save Image
     ext = file.filename.split(".")[-1] if file.filename and "." in file.filename else "jpg"
@@ -124,6 +163,7 @@ async def predict(
             "cropType": cropType,
             "confidence": confidence,
         },
+        "alternatives": alternatives,
         "scannedAt": new_history.scannedAt.isoformat() + "Z" if new_history.scannedAt else None,
     }
 

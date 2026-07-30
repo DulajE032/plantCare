@@ -79,12 +79,13 @@ export default function DiseaseDetailPage({ params }: DiseaseDetailPageProps) {
         <div className="lg:col-span-5 lg:sticky lg:top-20 space-y-6">
           <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-zinc-250/50 dark:border-zinc-800 shadow-md">
             <Image
-              src={disease.imageUrl || ""}
+              src={disease.imageUrl || "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&q=80&w=600"}
               alt={disease.disease}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 400px"
               priority
+              unoptimized
             />
           </div>
           

@@ -12,6 +12,8 @@ router = APIRouter()
 
 @router.get("/history", response_model=List[HistoryItemSchema])
 async def get_history(
+    skip: int = 0,
+    limit: int = 100,
     db: AsyncSession = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user)
 ):
@@ -20,7 +22,8 @@ async def get_history(
         select(HistoryItem)
         .where(HistoryItem.user_id == user_id)
         .order_by(HistoryItem.scannedAt.desc())
-        .limit(100)
+        .offset(skip)
+        .limit(limit)
     )
     items = result.scalars().all()
     return items

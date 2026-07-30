@@ -12,10 +12,19 @@ export interface DiseaseRecommendation {
   imageUrl?: string;
 }
 
+export interface AlternativePrediction {
+  slug: string;
+  disease: string;
+  confidence: number;
+  severity: "low" | "moderate" | "severe";
+  cropType: string;
+}
+
 export interface ScanResult {
   id: string;
   imageUrl: string;
   recommendation: DiseaseRecommendation;
+  alternatives: AlternativePrediction[];
   scannedAt: string;
 }
 
