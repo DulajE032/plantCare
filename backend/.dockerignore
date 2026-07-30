@@ -1,0 +1,26 @@
+# Ignore virtual environments
+.venv/
+venv/
+env/
+
+# Ignore Python cache files
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Ignore datasets (huge files, not needed for production container)
+ai_model/datasset/
+ai_model/dataset/
+
+# Ignore local media and uploads
+media/
+app/uploads/
+
+# Ignore local system/IDE files
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+*.log

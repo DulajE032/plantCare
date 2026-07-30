@@ -5,9 +5,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     base_dir: str = str(Path(__file__).resolve().parent.parent)
     frontend_origin: str = "http://localhost:3000"
-    model_path: str = "ai_model/models/best_model.pth"
-    class_names_path: str = "ai_model/class_names.json"
-    disease_db_path: str = "app/data/diseases.json"
+    model_path: str = str(Path(__file__).resolve().parent.parent / "ai_model" / "models" / "best_model.pth")
+    class_names_path: str = str(Path(__file__).resolve().parent.parent / "ai_model" / "class_names.json")
+    disease_db_path: str = str(Path(__file__).resolve().parent.parent / "app" / "data" / "diseases.json")
     
     # Postgres Database Config
     database_url: str = "postgresql+asyncpg://postgres:dulaj16376@localhost:5432/plantcare"
