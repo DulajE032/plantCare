@@ -33,3 +33,5 @@ httpx
 pyjwt
 bcrypt
 passlib[bcrypt]
+torch
+torchvision
