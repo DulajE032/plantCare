@@ -1,575 +1,599 @@
-
-<div align="center">
-
-
 # 🌿 PlantCare
 
-### Intelligent Plant Disease Classification Platform
+## Intelligent Plant Disease Classification Platform
 
-<img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=26&duration=3000&pause=1000&color=2ECC71&center=true&vCenter=true&width=700&lines=AI-Powered+Plant+Disease+Classification;Next.js+%7C+FastAPI+%7C+PyTorch;Smart+Agriculture+Platform;Empowering+Farmers+with+Artificial+Intelligence" />
+PlantCare is an AI-powered plant disease classification platform designed to help farmers, home gardeners, researchers, and agricultural professionals identify plant diseases from leaf images.
 
-<p>
-An AI-powered platform that helps farmers identify plant diseases instantly using deep learning,
-providing accurate diagnosis, treatment recommendations, and crop health management through
-a modern Next.js web application powered by a FastAPI backend.
-</p>
+The system combines **deep learning, image processing, a RESTful backend, and a modern web interface** to provide disease predictions, confidence scores, treatment recommendations, preventive guidance, and diagnosis history.
 
-<img src="https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js"/>
-<img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react"/>
-<img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi"/>
-<img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python"/>
-<img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql"/>
-<img src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch"/>
-<img src="https://img.shields.io/badge/TailwindCSS-4-38B2AC?style=for-the-badge&logo=tailwind-css"/>
-<img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge"/>
-
-</div>
-<p align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&height=280&color=0:16A34A,100:22C55E&text=EcoVision&fontAlign=50&fontAlignY=40&fontSize=70&fontColor=ffffff&desc=Intelligent%20Plant%20Disease%20Classification%20Platform&descAlign=50&descAlignY=65"/>
-</p>
-
-## 🌱 About PlantCare
-
-EcoVision is an AI-powered smart agriculture platform designed to assist farmers,
-researchers, and agricultural experts in identifying plant diseases from leaf images.
-
-Using state-of-the-art deep learning models, EcoVision provides instant disease
-classification, confidence scores, treatment recommendations, and preventive measures
-through an intuitive Flutter application powered by a FastAPI backend.
-
-The platform aims to improve crop productivity, reduce disease spread, and promote
-sustainable farming practices using modern artificial intelligence technologies.
-
-
-
-
-## 🌱 Overview
-
-The **Intelligent Plant Disease Classification Platform** is an AI-powered mobile and web application designed to help farmers, home gardeners, and agricultural professionals quickly identify plant diseases using images of plant leaves. Users can capture or upload a photo of a plant leaf, and the system uses a deep learning model to classify the disease and provide treatment recommendations, preventive measures, and disease management guidance.
-
-The platform consists of:
-
-* **Flutter Mobile Application (Android, iOS)**
-* **Flutter Desktop Application (Windows, macOS, Linux)**
-* **FastAPI Backend**
-* **PostgreSQL Database**
-* **AI Model for Plant Disease Classification**
-* **Admin Dashboard**
-* * **UV → Fast Python package/environment manager**
+The platform is designed as a modular full-stack system consisting of a frontend application, FastAPI backend, PostgreSQL database, and AI-based plant disease classification component.
 
 ---
 
-# Problem Statement
+## 📌 Overview
 
-Plant diseases significantly reduce crop yield and quality. Many farmers, especially in rural areas, lack immediate access to agricultural experts, leading to delayed diagnosis and ineffective treatment.
+Plant diseases can significantly affect crop productivity and quality. In many situations, early identification is difficult because farmers may not have immediate access to agricultural experts.
 
-An intelligent platform capable of automatically identifying plant diseases from leaf images can assist farmers in making timely decisions, reducing crop losses, and improving agricultural productivity.
+PlantCare addresses this problem by allowing users to upload or capture an image of a plant leaf. The image is processed and analyzed using a trained deep learning model. The system then provides a predicted disease, confidence score, and relevant treatment and prevention information.
 
----
+### Core Workflow
 
-# Objectives
-
-### Main Objective
-
-Develop an AI-powered plant disease classification platform that accurately detects plant diseases from leaf images and provides treatment recommendations through mobile and desktop applications.
-
-### Specific Objectives
-
-* Develop an image classification model for plant disease detection.
-* Build a Flutter application for Android, iOS, and Desktop.
-* Develop a FastAPI backend for secure communication.
-* Store diagnosis history and user information.
-* Generate treatment recommendations.
-* Provide disease prevention guidelines.
-* Build an administrative dashboard.
-* Evaluate model performance.
-
-## ✨ Features
-
-- 📸 AI-Based Plant Disease Classification
-- 🌿 Instant Disease Diagnosis
-- 📊 Confidence Score Prediction
-- 💊 Treatment Recommendations
-- 🛡 Disease Prevention Tips
-- 📚 Diagnosis History
-- 👨‍🌾 Farmer Dashboard
-- 👩‍💼 Admin Dashboard
-- 📱 Flutter Mobile Application
-- 💻 Flutter Desktop Application
-- ⚡ FastAPI REST API
-- 🔒 JWT Authentication
-- ☁ Cloud Ready Architecture
-
-# System Architecture
-
-```
-                 Next.js Frontend
-                       │
-                 REST API (HTTPS)
-                       │
-                 FastAPI Backend
-                       │
-      ┌────────────────┼────────────────┐
-      │                │                │
- PostgreSQL      AI Classification    File Storage
-  Database             Model
+```text
+Plant Leaf Image
+       │
+       ▼
+Image Upload
+       │
+       ▼
+Image Validation
+       │
+       ▼
+Image Preprocessing
+       │
+       ▼
+AI Disease Classification
+       │
+       ▼
+Disease Prediction
+       │
+       ▼
+Confidence Score
+       │
+       ▼
+Treatment & Prevention Information
+       │
+       ▼
+Diagnosis History
 ```
 
 ---
 
-# Technology Stack
+## 🎯 Objectives
 
-## Frontend
+The main objectives of PlantCare are to:
 
-- Next.js 15
-- React 19
-- TypeScript
-- Tailwind CSS
-- Shadcn UI
-- Framer Motion
-- Axios
-
----
-
-## Backend
-
-- FastAPI
-- Python 3.12+
-- SQLAlchemy
-- Alembic
-- Pydantic
-- JWT Authentication
-- Uvicorn
+* Develop an AI-based plant disease classification system.
+* Identify diseases from plant leaf images.
+* Provide disease prediction results with confidence scores.
+* Provide treatment and prevention recommendations.
+* Maintain users' diagnosis history.
+* Provide role-based access to system functionality.
+* Provide administrative management capabilities.
+* Build a scalable REST API for communication between the frontend and backend.
+* Evaluate the performance of the trained machine learning model.
 
 ---
 
-## Database
+## ✨ Key Features
 
-- PostgreSQL
+### 🌱 Plant Disease Detection
+
+Users can upload plant leaf images and obtain an AI-generated disease classification.
+
+### 🤖 AI-Based Classification
+
+The system uses deep learning and computer vision technologies to analyze plant images and classify potential diseases.
+
+### 📊 Confidence Score
+
+Prediction results include a confidence value representing the model's estimated confidence in the classification.
+
+### 💊 Treatment Recommendations
+
+After identifying a disease, the system can provide corresponding treatment information.
+
+### 🛡️ Prevention Guidance
+
+Users can access preventive measures and disease-management information.
+
+### 📚 Diagnosis History
+
+Previous predictions can be stored and accessed through the user's history.
+
+### 👨‍🌾 User Dashboard
+
+Users can manage their account, submit images, view predictions, and access previous diagnoses.
+
+### 👨‍💼 Administrative Dashboard
+
+Administrators can manage users, crops, diseases, and other system information.
+
+### 🔐 Authentication & Authorization
+
+The backend supports JWT-based authentication and role-based access control.
+
+### 📱 Responsive Application
+
+The frontend provides an interface for interacting with the disease classification platform.
+
+### 🐳 Containerized Deployment
+
+Docker configuration is included to simplify application deployment and environment setup.
 
 ---
 
-## Artificial Intelligence
+## 🏗️ System Architecture
 
-- PyTorch
-- Torchvision
-- OpenCV
-- NumPy
-- Pillow
+```text
+                    ┌──────────────────────┐
+                    │      Frontend        │
+                    │  Web Application     │
+                    └──────────┬───────────┘
+                               │
+                               │ REST API
+                               ▼
+                    ┌──────────────────────┐
+                    │    FastAPI Backend   │
+                    │                      │
+                    │ Authentication       │
+                    │ Business Logic       │
+                    │ API Endpoints        │
+                    │ AI Integration       │
+                    └───────┬───────┬──────┘
+                            │       │
+                ┌───────────┘       └────────────┐
+                ▼                                ▼
+       ┌────────────────┐               ┌─────────────────┐
+       │  PostgreSQL    │               │ AI Classification│
+       │    Database    │               │     Model       │
+       └────────────────┘               └─────────────────┘
+```
 
 ---
 
-## Deployment
+## 🛠️ Technology Stack
 
-- Docker
-- Nginx
-- Azure
-- AWS
-- Railway
-- Vercel (Frontend)
+### Frontend
 
-# Project Structure
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* Shadcn UI
+* Framer Motion
+* Axios
 
-ecovision/
+### Backend
 
+* Python
+* FastAPI
+* SQLAlchemy
+* Alembic
+* Pydantic
+* JWT Authentication
+* Uvicorn
+
+### Database
+
+* PostgreSQL
+
+### Artificial Intelligence
+
+* PyTorch
+* Torchvision
+* OpenCV
+* NumPy
+* Pillow
+
+### Development & Deployment
+
+* Git
+* GitHub
+* Docker
+* Docker Compose
+* UV
+* Vercel
+
+---
+
+## 📂 Project Structure
+
+```text
+plantCare/
 │
 ├── backend/
 │   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   ├── services/
-│   │   ├── ai/
-│   │   ├── uploads/
-│   │   └── main.py
-│   │
-│   ├── alembic/
-│   ├── requirements.txt
-│   └── Dockerfile
+│   ├── ...
+│   └── main.py
 │
-├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── hooks/
-│   ├── lib/
-│   ├── services/
-│   ├── types/
-│   ├── public/
-│   ├── styles/
-│   ├── package.json
-│   └── next.config.ts
+├── plant-disease-frontend/
+│   ├── ...
+│   └── package.json
 │
-├── ai_model/
-│   ├── dataset/
-│   ├── training/
-│   ├── models/
-│   ├── inference.py
-│   └── train.py
+├── Document/
 │
-├── docs/
+├── Group_10_M1_Proposal.pdf
+├── PlantCare_M6_G10_Final_Presentation.pdf
+├── PlantCare_M6_G10_Final_Report.pdf
 │
+├── docker-compose.yml
+├── implementation_plan.md
+├── integration_guide.md
+├── task.md
+├── .gitignore
 └── README.md
+```
 
-# User Roles
+The repository also contains project documentation and academic project deliverables.
 
-## Farmer
+---
 
-* Register
-* Login
+## 👥 User Roles
+
+### User / Farmer
+
+Users can:
+
+* Register an account
+* Log in securely
 * Upload plant images
-* View diagnosis
-* View treatment
-* Save history
+* Obtain disease predictions
+* View treatment information
+* View prevention information
+* Access diagnosis history
+
+### Agricultural Expert
+
+The platform is designed to support agricultural experts with capabilities such as:
+
+* Reviewing disease information
+* Providing recommendations
+* Supporting farmers
+* Managing agricultural knowledge
+
+### Administrator
+
+Administrators can manage:
+
+* Users
+* Crops
+* Diseases
+* Articles
+* System information
+* Reports
 
 ---
 
-## Agricultural Expert
+## 🔐 Security
 
-* Verify diagnoses
-* Provide recommendations
-* Answer farmer questions
-* Publish disease articles
+PlantCare is designed with several security mechanisms, including:
 
----
+* JWT-based authentication
+* Password hashing
+* Role-based authorization
+* Input validation
+* Secure API communication
+* File-upload validation
+* Protected administrative endpoints
 
-## Administrator
-
-* Manage users
-* Manage crops
-* Manage diseases
-* View reports
-* Manage AI model
+Authentication and authorization are handled through the backend API.
 
 ---
 
-# AI Workflow
+## 🤖 AI Disease Classification
 
-```
-Upload Image
-      │
-      ▼
+The AI component follows an image-classification pipeline:
+
+```text
+Input Image
+     │
+     ▼
 Image Validation
-      │
-      ▼
-Image Preprocessing
-      │
-      ▼
+     │
+     ▼
+Preprocessing
+     │
+     ▼
+Feature Extraction
+     │
+     ▼
 Deep Learning Model
-      │
-      ▼
-Disease Prediction
-      │
-      ▼
+     │
+     ▼
+Disease Classification
+     │
+     ▼
 Confidence Score
-      │
-      ▼
-Treatment Recommendation
-      │
-      ▼
-Store Result
 ```
+
+Potential deep learning architectures documented for the project include:
+
+* EfficientNet
+* MobileNet
+* ResNet
+* Vision Transformer
+* ConvNeXt
+
+The project documentation identifies datasets such as **PlantVillage**, **PlantDoc**, and other plant-disease datasets as possible sources for model development.
 
 ---
 
-# Database Tables
+## 🗄️ Data Management
+
+The system is designed to maintain information related to:
 
 ### Users
 
-* id
-* full_name
-* email
-* password
-* role
-* created_at
-
----
+* User ID
+* Name
+* Email
+* Password
+* Role
+* Account creation information
 
 ### Crops
 
-* id
-* crop_name
-* scientific_name
-
----
+* Crop name
+* Scientific name
 
 ### Diseases
 
-* id
-* disease_name
-* crop_id
-* symptoms
-* treatment
-* prevention
-
----
+* Disease name
+* Associated crop
+* Symptoms
+* Treatment
+* Prevention
 
 ### Predictions
 
-* id
-* user_id
-* disease_id
-* confidence
-* image_path
-* prediction_date
-
----
+* User
+* Predicted disease
+* Confidence score
+* Image
+* Prediction date
 
 ### Articles
 
-* id
-* title
-* description
-* author
-* created_at
+* Title
+* Description
+* Author
+* Publication information
 
 ---
 
-# AI Model
+## 🔌 REST API
 
-### Recommended Models
+The backend exposes RESTful endpoints for communication between the frontend and server.
 
-* EfficientNet-B0 ⭐
-* MobileNetV3 ⭐⭐⭐
-* ResNet50
-* Vision Transformer (ViT)
-* ConvNeXt
+### Authentication
 
----
-
-# Dataset
-
-Recommended datasets:
-
-* PlantVillage Dataset
-* PlantDoc Dataset
-* Kaggle Plant Disease Dataset
-
-Example classes:
-
-```
-Apple Scab
-
-Apple Black Rot
-
-Corn Rust
-
-Tomato Early Blight
-
-Tomato Late Blight
-
-Tomato Mosaic Virus
-
-Tomato Leaf Mold
-
-Potato Early Blight
-
-Potato Late Blight
-
-Pepper Bacterial Spot
-
-Healthy Leaves
-```
-
----
-
-# REST API
-
-## Authentication
-
-```
+```text
 POST /api/auth/register
-
 POST /api/auth/login
-
-GET /api/auth/profile
+GET  /api/auth/profile
 ```
 
----
+### Disease Prediction
 
-## Prediction
-
-```
+```text
 POST /api/predict
-
-GET /api/history
-
-GET /api/history/{id}
+GET  /api/history
+GET  /api/history/{id}
 ```
 
----
+### Diseases
 
-## Diseases
-
-```
+```text
 GET /api/diseases
-
 GET /api/diseases/{id}
 ```
 
----
+### Articles
 
-## Articles
-
-```
-GET /api/articles
-
+```text
+GET  /api/articles
 POST /api/articles
 ```
 
----
+### Administration
 
-## Admin
-
-```
-GET /api/admin/users
-
-GET /api/admin/reports
-
+```text
+GET  /api/admin/users
+GET  /api/admin/reports
 POST /api/admin/diseases
 ```
 
----
-
-# Web Pages
-
-- Landing Page
-- Login
-- Register
-- Dashboard
-- Upload Image
-- Disease Prediction
-- Disease Details
-- Prediction History
-- Articles
-- Profile
-- Settings
-- Admin Dashboard
----
-
-# Future Enhancements
-
-* Real-time camera detection
-* Offline AI inference
-* Weather-based disease risk prediction
-* Fertilizer recommendations
-* Pest detection
-* Voice assistant
-* Chatbot for plant care
-* IoT sensor integration
-* Satellite-based crop monitoring
+These endpoints are documented in the current repository README.
 
 ---
 
-# Security
+## 🖥️ Main Application Pages
 
-* JWT Authentication
-* Password hashing (bcrypt)
-* HTTPS
-* Input validation
-* Rate limiting
-* Secure file uploads
-* Role-based authorization
+The platform includes functionality for:
 
----
-
-# Testing
-
-* Unit Testing
-* Integration Testing
-* API Testing
-* Flutter Widget Testing
-* Model Accuracy Evaluation
+* Landing Page
+* User Registration
+* User Login
+* Dashboard
+* Plant Image Upload
+* Disease Prediction
+* Disease Details
+* Prediction History
+* Articles
+* User Profile
+* Settings
+* Administrative Dashboard
 
 ---
 
-# Performance Metrics
+## 🚀 Getting Started
 
-* Accuracy
-* Precision
-* Recall
-* F1-score
-* Inference time
-* API response time
-
----
-
-# Installation
-
-## Backend
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/plant-disease-platform.git
+git clone https://github.com/DulajE032/plantCare.git
+cd plantCare
+```
 
+### 2. Backend Setup
+
+Navigate to the backend directory:
+
+```bash
 cd backend
+```
 
+Create a virtual environment:
+
+```bash
 python -m venv venv
+```
 
-source venv/bin/activate
-# Windows
+Activate the environment.
+
+#### Windows
+
+```bash
 venv\Scripts\activate
+```
 
+#### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+Install the dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
+Run the database migrations:
+
+```bash
 alembic upgrade head
+```
 
+Start the FastAPI development server:
+
+```bash
 uvicorn app.main:app --reload
 ```
-## Frontend
 
-cd frontend
+The API will then be available through the local development server.
 
+---
+
+## 💻 Frontend Setup
+
+Open another terminal and navigate to the frontend:
+
+```bash
+cd plant-disease-frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
 
+Start the development server:
+
+```bash
 npm run dev
+```
+
+The frontend can then be accessed through the local development URL displayed by Next.js.
 
 ---
 
-# Expected Outcomes
+## 🐳 Docker
 
-* Accurate plant disease identification using AI.
-* Fast diagnosis through mobile and desktop applications.
-* Actionable treatment and prevention recommendations.
-* Centralized history of plant health records.
-* Improved decision-making for farmers and agricultural experts.
-* Reduced crop losses and enhanced agricultural productivity.
+The repository includes Docker configuration for running project services in containers.
+
+To start the configured services:
+
+```bash
+docker compose up --build
+```
+
+To stop the services:
+
+```bash
+docker compose down
+```
 
 ---
 
-# License
+## 📊 Model Evaluation
+
+The AI model can be evaluated using standard classification metrics:
+
+| Metric         | Purpose                                    |
+| -------------- | ------------------------------------------ |
+| Accuracy       | Overall classification correctness         |
+| Precision      | Correctness of positive predictions        |
+| Recall         | Ability to identify relevant disease cases |
+| F1-Score       | Balance between precision and recall       |
+| Inference Time | Time required to generate a prediction     |
+
+These metrics can be used to evaluate the effectiveness and practical performance of the disease classification model.
+
+---
+
+## 🔮 Future Enhancements
+
+Potential future improvements include:
+
+* Real-time camera-based disease detection
+* Offline AI inference
+* Weather-based disease-risk prediction
+* Fertilizer recommendations
+* Pest detection
+* Voice-based assistance
+* Plant-care chatbot
+* IoT sensor integration
+* Satellite-based crop monitoring
+* Additional crop and disease classes
+
+---
+
+## 📚 Project Documentation
+
+Additional project documentation is available in the repository, including:
+
+* Project proposal
+* Final report
+* Final presentation
+* Implementation plan
+* Integration guide
+* Development tasks
+
+---
+
+## 🎓 Academic Project
+
+**Project:** PlantCare – Intelligent Plant Disease Classification Platform
+
+**Institution:** Faculty of Engineering, University of Peradeniya
+
+**Project Team:**
+
+* Dulaj Ashen
+* Minhaj Ali
+* Tharaka
+* Rinushan
+
+The repository identifies the work as an academic Computer Engineering project.
+
+---
+
+## 📄 License
 
 This project is licensed under the **MIT License**.
 
 ---
 
+## 🌿 Project Summary
+
+PlantCare combines **artificial intelligence, computer vision, web technologies, and database systems** to create a practical plant disease identification platform.
+
+By connecting an AI-based image classification system with a RESTful backend and user-facing application, PlantCare provides a structured platform for plant disease diagnosis, information management, and agricultural decision support.
+
 ---
 
-<div align="center">
+### Project Repository
 
-### 🌿 PlantCare
-
-⭐ If you like this project, don't forget to star the repository!
-
-</div>
-
-## Authors
-
-**Developed by:** Dulaj Ashen, Minhaj Ali, Tharaka, Rinushan
-
-**University:** Faculty of Engineering, University of Peradeniya
-
-**Project Type:** Final Year Computer Engineering Project
-
-### Tech Stack
-
-- Next.js 15
-- React 19
-- TypeScript
-- Tailwind CSS
-- FastAPI
-- PostgreSQL
-- PyTorch
-- OpenCV
-- Docker
-- Vercel
+[GitHub Repository](https://github.com/DulajE032/plantCare)
