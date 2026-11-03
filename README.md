@@ -1,6 +1,6 @@
 # 🌿 PlantCare
 
-## Intelligent Plant Disease Classification Platform
+
 
 PlantCare is an AI-powered plant disease classification platform designed to help farmers, home gardeners, researchers, and agricultural professionals identify plant diseases from leaf images.
 
